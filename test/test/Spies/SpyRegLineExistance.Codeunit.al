@@ -8,7 +8,7 @@ codeunit 123456746 "SpyRegLineExistance" implements IRegistrationLineExistance
         exit(_visited);
     end;
 
-    procedure HandleLinesExist(IsEmpty: Boolean)
+    procedure HandleLinesExist(var SeminarRegistrationLine: Record "Seminar Registration Line ASD"; SeminarNo: code[20])
     begin
         _visited := true;
     end;

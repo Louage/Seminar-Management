@@ -4,7 +4,7 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
     Subtype = Test;
     TestPermissions = Disabled;
 
-#region Test Methods
+    #region Test Methods
 
 
     [Test]
@@ -61,7 +61,7 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
 
     end;
 
-#region CheckMandatoryHeaderFields
+    #region CheckMandatoryHeaderFields
     [Test]
     procedure CheckMandatoryHeaderFieldsInvalidStatus()
     var
@@ -208,19 +208,20 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
         if FieldNo <> SeminarRegistrationHeader.FieldNo("Room Resource No.") then
             SeminarRegistrationHeader."Room Resource No." := 'SomeValue';
     end;
-#endregion CheckMandatoryHeaderFields
+    #endregion CheckMandatoryHeaderFields
 
-#region CheckSeminarLinesExist
+    #region CheckSeminarLinesExist
 
     [Test]
     procedure CheckLinesExistInvalid()
     var
+        TempSeminarRegistrationLine: Record "Seminar Registration Line ASD" temporary;
         RegistrationLineExistance: Codeunit RegistrationLineExistance;
     begin
         // [GIVEN] Seminar registration with no lines
 
         // [WHEN] Check registration lines exist
-        asserterror RegistrationLineExistance.HandleLinesExist(true);
+        asserterror RegistrationLineExistance.HandleLinesExist(TempSeminarRegistrationLine, 'TEST');
 
         // [THEN] Nothing to post error thrown
         VerifyNothingToPostErrorThrown();
@@ -229,17 +230,19 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
     [Test]
     procedure CheckLinesExistValid()
     var
+        TempSeminarRegistrationLine: Record "Seminar Registration Line ASD" temporary;
         RegistrationLineExistance: Codeunit RegistrationLineExistance;
     begin
         // [GIVEN] Seminar registration with lines
-
+        TempSeminarRegistrationLine."Document No." := 'TEST';
+        TempSeminarRegistrationLine.Insert(false);
         // [WHEN] Check registration lines exist
-        RegistrationLineExistance.HandleLinesExist(false);
+        RegistrationLineExistance.HandleLinesExist(TempSeminarRegistrationLine, 'TEST');
 
         // [THEN] No error thrown
     end;
-#endregion CheckSeminarLinesExist
-#region CheckMandatoryLineFields
+    #endregion CheckSeminarLinesExist
+    #region CheckMandatoryLineFields
 
     [Test]
     procedure CheckMandatoryLineFieldsBillToCustInv()
@@ -295,8 +298,8 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
         if FieldNo <> SeminarRegistrationLine.FieldNo("Participant Contact No.") then
             SeminarRegistrationLine."Participant Contact No." := 'TEST';
     end;
-#endregion CheckMandatoryLineFields
-#endregion Test Methods
+    #endregion CheckMandatoryLineFields
+    #endregion Test Methods
 
     var
         Assert: Codeunit Assert;
@@ -339,7 +342,7 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
         LibraryTestInitialize.OnAfterTestSuiteInitialize(Codeunit::"Sem. Posting (5) OC ASD");
     end;
 
-#region GIVEN helper methods
+    #region GIVEN helper methods
     local procedure CreateSeminar(): Code[20]
     begin
         exit(SeminarMgtLibrarySetup.CreateSeminarNo(false));
@@ -415,9 +418,9 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
 
         exit(SeminarRegistrationHeader."No.");
     end;
-#endregion GIVEN helper methods
+    #endregion GIVEN helper methods
 
-#region WHEN helper methods
+    #region WHEN helper methods
 
     local procedure SetStatusAndPostingNoOnSeminarRegistration(SeminarRegistrationNo: Code[20]; NewStatus: Enum "Seminar Document Status ASD"): Code[20]
     var
@@ -430,9 +433,9 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
         SeminarRegistrationHeader.Modify();
         exit(SeminarRegistrationHeader."Posting No.");
     end;
-#endregion WHEN helper methods
+    #endregion WHEN helper methods
 
-#region THEN helper methods
+    #region THEN helper methods
     local procedure VerifySeminarRegistrationIsRemoved(SeminarRegistrationNo: Code[20])
     var
         SeminarRegistrationHeader: Record "Sem. Registration Header ASD";
@@ -523,6 +526,6 @@ codeunit 123456768 "Sem. Posting (9) CSS ASD"
     begin
         Assert.ExpectedError(NothingToPostErr);
     end;
-#endregion THEN helper methods
+    #endregion THEN helper methods
 }
 #endif

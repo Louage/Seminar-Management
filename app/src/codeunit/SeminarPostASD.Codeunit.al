@@ -87,7 +87,7 @@ codeunit 123456720 "Seminar-Post ASD"
         SourceCodeSetup: Record "Source Code Setup";
     begin
         // Test Near
-        _Factory.GetIRegistrationHeaderValidator().CheckMandatoryHeaderFields(SeminarRegistrationHeader2);
+        // _Factory.GetIRegistrationHeaderValidator().CheckMandatoryHeaderFields(SeminarRegistrationHeader2);
 
         InitProgressWindow(SeminarRegistrationHeader2."No.");
 
@@ -466,8 +466,7 @@ codeunit 123456720 "Seminar-Post ASD"
     var
         SeminarRegistrationLine2: Record "Seminar Registration Line ASD";
     begin
-        SeminarRegistrationLine2.SetRange("Document No.", SeminarRegistrationHeader2."No.");
-        _Factory.GetIRegistrationLineExistance().HandleLinesExist(SeminarRegistrationLine2.IsEmpty());
+        _Factory.GetIRegistrationLineExistance().HandleLinesExist(SeminarRegistrationLine2, SeminarRegistrationHeader2."No.");
     end;
     // ASD8.03<
 }

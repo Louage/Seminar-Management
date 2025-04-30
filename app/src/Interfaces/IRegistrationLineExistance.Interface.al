@@ -1,5 +1,5 @@
 Interface IRegistrationLineExistance
 {
 
-    procedure HandleLinesExist(IsEmpty: Boolean);
+    procedure HandleLinesExist(var SeminarRegistrationLine: Record "Seminar Registration Line ASD"; SeminarNo: code[20]);
 }
