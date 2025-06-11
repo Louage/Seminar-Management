@@ -87,7 +87,7 @@ codeunit 123456720 "Seminar-Post ASD"
         SourceCodeSetup: Record "Source Code Setup";
     begin
         // Test Near
-        // _Factory.GetIRegistrationHeaderValidator().CheckMandatoryHeaderFields(SeminarRegistrationHeader2);
+        _Factory.GetIRegistrationHeaderValidator().CheckMandatoryHeaderFields(SeminarRegistrationHeader2);
 
         InitProgressWindow(SeminarRegistrationHeader2."No.");
 
